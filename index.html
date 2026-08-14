@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY AGENTS. | nao ポートフォリオ</title>
+<meta name="description" content="AIエージェントを自分の手で10体つくって運用しているnaoのポートフォリオ。制作相談・お仕事のご相談はこちらから。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MY AGENTS. | nao ポートフォリオ">
+<meta property="og:description" content="困りごとから、エージェントが生まれる。日々の実務で使うAIエージェントを自作・運用しています。">
+<meta property="og:image" content="images/ogp-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=Poppins:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-blue: #474E63;
+    --color-coral: #F0C9BE;
+    --color-white: #FFFFFF;
+    --color-smoke: #ACB3C1;
+    --color-periwinkle: #D6D8F5;
+    --color-maroon: #81545B;
+
+    --color-bg-soft-coral: #FAEFEC;
+
+    --color-text-primary: #474E63;
+    --color-text-accent: #81545B;
+    --color-text-sub: #5E6578;
+
+    --font-heading-ja: 'Zen Kaku Gothic New', sans-serif;
+    --font-heading-en: 'Poppins', sans-serif;
+    --font-body: 'Noto Sans JP', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    line-height: 1.8;
+  }
+
+  section {
+    scroll-margin-top: 72px;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-maroon);
+    outline-offset: 2px;
+  }
+
+  /* ==================== Header ==================== */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--color-periwinkle);
+  }
+
+  .site-header-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-logo {
+    font-family: var(--font-heading-en);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    color: var(--color-blue);
+    text-decoration: none;
+  }
+
+  .site-logo span {
+    color: var(--color-text-accent);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .site-nav a {
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .site-nav a:hover {
+    color: var(--color-text-accent);
+  }
+
+  .site-nav .nav-cta {
+    color: var(--color-white);
+    background: var(--color-maroon);
+    padding: 8px 20px;
+    border-radius: 999px;
+  }
+
+  .site-nav .nav-cta:hover {
+    color: var(--color-white);
+    filter: brightness(0.92);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-blue);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  /* ==================== サイドラベル ==================== */
+
+  .side-label {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    pointer-events: none;
+  }
+
+  .side-label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-coral);
+    flex-shrink: 0;
+  }
+
+  .side-label-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--color-blue);
+  }
+
+  .side-label-line {
+    width: 1px;
+    height: 56px;
+    background: var(--color-periwinkle);
+    flex-shrink: 0;
+  }
+
+  .side-label-caption {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--font-heading-en);
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--color-text-sub);
+  }
+
+  @media (max-width: 760px) {
+    .side-label { display: none; }
+    .site-header-inner { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .site-nav { gap: 12px; }
+    .site-nav .nav-cta { padding: 7px 16px; font-size: 11px; }
+    .nav-toggle { display: flex; }
+
+    .mobile-menu {
+      display: flex;
+      flex-direction: column;
+      max-height: 0;
+      overflow: hidden;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-periwinkle);
+      transition: max-height 0.25s ease;
+    }
+
+    .mobile-menu.is-open {
+      max-height: 200px;
+    }
+
+    .mobile-menu a {
+      font-family: var(--font-heading-en);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--color-text-primary);
+      text-decoration: none;
+      padding: 16px 20px;
+      border-top: 1px solid var(--color-periwinkle);
+    }
+  }
+
+  /* ==================== Hero ==================== */
+
+  .hero-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 96px 24px 80px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--color-text-accent);
+    background: var(--color-bg-soft-coral);
+    border-radius: 999px;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+  }
+
+  .hero-heading-en {
+    font-family: var(--font-heading-en);
+    font-weight: 700;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 1;
+    margin: 0 0 20px;
+    color: var(--color-blue);
+  }
+
+  .hero-caption {
+    font-family: var(--font-heading-en);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(18px, 2.4vw, 22px);
+    color: var(--color-text-accent);
+    margin: 0 0 28px;
+  }
+
+  .hero-lead {
+    font-size: 16px;
+    color: var(--color-text-primary);
+    max-width: 460px;
+    margin: 0;
+  }
+
+  .hero-illustration {
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
+    background: linear-gradient(160deg, var(--color-periwinkle) 0%, var(--color-white) 65%);
+    border: 1px solid var(--color-smoke);
+    overflow: hidden;
+  }
+
+  .hero-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 760px) {
+    .hero-section { padding: 64px 20px 56px; }
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-illustration {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  /* ==================== About / Profile ==================== */
+
+  .about-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 88px 24px 96px;
+  }
+
+  .about-eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--color-text-accent);
+    background: var(--color-bg-soft-coral);
+    border-radius: 999px;
+    padding: 6px 16px;
+    margin-bottom: 20px;
+  }
+
+  .about-heading {
+    font-family: var(--font-heading-ja);
+    font-weight: 700;
+    font-size: clamp(22px, 3vw, 28px);
+    margin: 0 0 48px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.7fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .profile-list {
+    margin: 0;
+  }
+
+  .profile-row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 1px solid var(--color-periwinkle);
+  }
+
+  .profile-row:last-child {
+    border-bottom: 1px solid var(--color-periwinkle);
+  }
+
+  .profile-row dt {
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--color-text-sub);
+    padding-top: 2px;
+  }
+
+  .profile-row dd {
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-text-primary);
+  }
+
+  .profile-row.emphasis dd {
+    color: var(--color-text-accent);
+  }
+
+  .about-illustration {
+    aspect-ratio: 3 / 4;
+    border-radius: 24px;
+    background: linear-gradient(160deg, var(--color-bg-soft-coral) 0%, var(--color-white) 65%);
+    border: 1px solid var(--color-smoke);
+    overflow: hidden;
+  }
+
+  .about-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 760px) {
+    .about-section { padding: 64px 20px 72px; }
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-illustration {
+      order: -1;
+      aspect-ratio: 16 / 10;
+    }
+    .profile-row {
+      grid-template-columns: 80px 1fr;
+    }
+  }
+
+  /* ==================== Works ==================== */
+
+  .works-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 88px 24px 96px;
+  }
+
+  .works-eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--color-text-accent);
+    background: var(--color-bg-soft-coral);
+    border-radius: 999px;
+    padding: 6px 16px;
+    margin-bottom: 20px;
+  }
+
+  .works-heading-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .works-heading-en {
+    font-family: var(--font-heading-en);
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0;
+  }
+
+  .works-heading-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-smoke);
+  }
+
+  .works-sub {
+    font-size: 14px;
+    color: var(--color-text-sub);
+    margin: 0 0 48px;
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .work-card {
+    border: 1px solid var(--color-periwinkle);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--color-white);
+  }
+
+  .work-card--feature {
+    background: var(--color-bg-soft-coral);
+    border-color: var(--color-coral);
+  }
+
+  .work-thumb {
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    background: var(--color-periwinkle);
+    overflow: hidden;
+  }
+
+  .work-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .work-card--feature .work-thumb {
+    background: var(--color-coral);
+    color: var(--color-maroon);
+  }
+
+  .work-tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-text-accent);
+    background: var(--color-bg-soft-coral);
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  .work-card--feature .work-tag {
+    background: var(--color-maroon);
+    color: var(--color-white);
+  }
+
+  .work-catch {
+    font-family: var(--font-heading-ja);
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .work-card--feature .work-catch {
+    color: var(--color-maroon);
+  }
+
+  .work-desc {
+    font-size: 13.5px;
+    color: var(--color-text-sub);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .work-name {
+    font-family: var(--font-heading-en);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-text-sub);
+    margin: 0;
+  }
+
+  .works-coming-soon {
+    margin-top: 40px;
+    padding: 24px 28px;
+    border: 1px dashed var(--color-smoke);
+    border-radius: 16px;
+  }
+
+  .works-coming-soon p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .works-coming-soon .label {
+    font-family: var(--font-heading-en);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--color-text-sub);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 760px) {
+    .works-section { padding: 64px 20px 72px; }
+    .works-grid {
+      grid-template-columns: 1fr;
+    }
+    .work-card--feature {
+      grid-column: span 1;
+    }
+  }
+
+  /* ==================== CTA ==================== */
+
+  .cta-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 96px 24px 112px;
+    text-align: center;
+  }
+
+  .cta-eyebrow {
+    display: inline-block;
+    font-family: var(--font-heading-en);
+    font-weight: 700;
+    font-size: clamp(24px, 4vw, 32px);
+    color: var(--color-blue);
+    margin: 0 0 12px;
+  }
+
+  .cta-sub {
+    font-family: var(--font-heading-ja);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-text-accent);
+    margin: 0 0 28px;
+  }
+
+  .cta-lead {
+    font-size: 15.5px;
+    color: var(--color-text-primary);
+    max-width: 440px;
+    margin: 0 auto 40px;
+  }
+
+  .cta-form-wrap {
+    margin: 0 auto;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--color-white);
+    background: var(--color-maroon);
+    padding: 16px 48px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: filter 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    filter: brightness(0.92);
+  }
+
+  .cta-privacy-note {
+    font-size: 12px;
+    color: var(--color-text-sub);
+    margin: 12px 0 0;
+  }
+
+  .cta-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--color-periwinkle);
+    margin: 40px auto;
+  }
+
+  .cta-line-btn {
+    display: inline-block;
+    line-height: 0;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .cta-line-btn:hover {
+    opacity: 0.85;
+  }
+
+  .cta-line-btn img {
+    height: 44px;
+    width: auto;
+  }
+
+  .cta-line-label {
+    font-size: 13px;
+    color: var(--color-text-sub);
+    margin: 16px 0 0;
+  }
+
+  @media (max-width: 760px) {
+    .cta-section { padding: 72px 20px 88px; }
+  }
+
+  /* ==================== Footer ==================== */
+
+  .site-footer {
+    border-top: 1px solid var(--color-periwinkle);
+  }
+
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-social a {
+    color: var(--color-text-sub);
+    display: flex;
+  }
+
+  .footer-social a:hover {
+    color: var(--color-text-accent);
+  }
+
+  .footer-copyright {
+    font-family: var(--font-heading-en);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-text-sub);
+    margin: 0;
+  }
+
+  /* サイドラベル分のスペースを確保（PC/タブレットのみ）。各セクションの基本paddingを上書きするため、必ずスタイルシート末尾に置く */
+  @media (min-width: 761px) {
+    .site-header-inner,
+    .hero-section,
+    .about-section,
+    .works-section,
+    .footer-inner {
+      padding-left: calc(24px + 48px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="side-label">
+  <span class="side-label-dot"></span>
+  <span class="side-label-text">PORTFOLIO</span>
+  <span class="side-label-line"></span>
+  <span class="side-label-caption">AI AGENT SHOWCASE</span>
+</div>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="#" class="site-logo">nao<span>.</span></a>
+    <nav class="site-nav">
+      <div class="nav-links">
+        <a href="#about">ABOUT</a>
+        <a href="#works">WORKS</a>
+      </div>
+      <a href="#contact" class="nav-cta">CONTACT</a>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about">ABOUT</a>
+    <a href="#works">WORKS</a>
+  </div>
+</header>
+
+<section class="hero-section">
+  <div class="hero-grid">
+    <div>
+      <span class="hero-eyebrow">PORTFOLIO</span>
+      <h1 class="hero-heading-en">MY AGENTS.</h1>
+      <p class="hero-caption">困りごとから、エージェントが生まれる。</p>
+      <p class="hero-lead">日々の実務で使うAIエージェントを、自分の手で10体つくって運用しています。ここではその一部を紹介します。</p>
+    </div>
+    <div class="hero-illustration">
+      <picture>
+        <source media="(max-width: 760px)" srcset="images/hero-mobile.webp">
+        <img src="images/hero-pc.webp" alt="ノートPCで作業する人物のイラスト">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<section class="about-section" id="about">
+  <span class="about-eyebrow">ABOUT</span>
+  <h2 class="about-heading">なぜ、自分でエージェントをつくるのか</h2>
+
+  <div class="about-grid">
+    <div class="about-illustration">
+      <picture>
+        <source media="(max-width: 760px)" srcset="images/about-mobile.webp">
+        <img src="images/about-pc.webp" alt="nao（でざいんていらー）のプロフィールイラスト">
+      </picture>
+    </div>
+
+    <dl class="profile-list">
+      <div class="profile-row">
+        <dt>NAME</dt>
+        <dd>nao（でざいんていらー）</dd>
+      </div>
+      <div class="profile-row">
+        <dt>ROLE</dt>
+        <dd>イラスト・Webデザイン ／ AIエージェント開発</dd>
+      </div>
+      <div class="profile-row">
+        <dt>CAREER</dt>
+        <dd>イラスト・デザイン歴10年以上。前職は求人広告営業で、情報設計とコピーライティングを実務で鍛える</dd>
+      </div>
+      <div class="profile-row">
+        <dt>NOW</dt>
+        <dd>案件のかたわら、自分の業務効率化のためにAIエージェントを開発。漫画制作のエージェントも自作し、気づけば10体を日常的に運用中</dd>
+      </div>
+      <div class="profile-row emphasis">
+        <dt>NOTE</dt>
+        <dd>「便利そう」で終わらせず、実際に自分の仕事で毎日使いながら育てています</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<section class="works-section" id="works">
+  <span class="works-eyebrow">WORKS</span>
+  <div class="works-heading-row">
+    <h2 class="works-heading-en">WORKS ——</h2>
+    <div class="works-heading-rule"></div>
+  </div>
+  <p class="works-sub">日常業務の中で実際に運用しているAIエージェントたち</p>
+
+  <div class="works-grid">
+    <div class="work-card work-card--feature">
+      <div class="work-thumb"><img src="images/manga-maker.webp" alt="manga-maker のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">MANGA / 6-AGENT STUDIO</span>
+      <p class="work-catch">言葉より伝わる、1コマの説明力。</p>
+      <p class="work-desc">企画・脚本・作画・仕上げまでを6体のAIが分担する漫画制作チーム。サービス紹介や社内説明を、読まれる漫画に変える。</p>
+      <p class="work-name">manga-maker</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/marketing-strategist.webp" alt="marketing-strategist のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">SNS / MARKETING</span>
+      <p class="work-catch">投稿を、迷わず出せるチームに。</p>
+      <p class="work-desc">SNS運用の企画から投稿案作成まで伴走。複数クライアントの案件を並行管理しながら、日々の発信を止めない。</p>
+      <p class="work-name">marketing-strategist</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/design-consultant.webp" alt="design-consultant のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">WEB DESIGN</span>
+      <p class="work-catch">このサイトも、一緒に作った。</p>
+      <p class="work-desc">LPやサイトの構成・配色・コーディングを一緒に進めるWebデザインAI。今見ているこのページも、実際に一緒に作った1枚。</p>
+      <p class="work-name">design-consultant</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/security-guard.webp" alt="security-guard のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">SECURITY</span>
+      <p class="work-catch">漏れる前提で、守り方を設計する。</p>
+      <p class="work-desc">APIキーの漏洩巡回や設定監査で、ひとり事業のセキュリティの穴を塞ぐ。「なんとなく大丈夫」を仕組みに変える。</p>
+      <p class="work-name">security-guard</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/customer-support-advisor.webp" alt="customer-support-advisor のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">CUSTOMER SUPPORT</span>
+      <p class="work-catch">一件一件に、迷わず向き合えるように。</p>
+      <p class="work-desc">問い合わせ対応のテンプレートやエスカレーション基準を整備し、日々の対応品質を支える。</p>
+      <p class="work-name">customer-support-advisor</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/accounting-helper.webp" alt="accounting-helper のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">ACCOUNTING</span>
+      <p class="work-catch">数字の不安を、後回しにしない。</p>
+      <p class="work-desc">仕訳や経費整理をサポートする経理AI。個人事業主のリアルな運用に合わせてルールを組んでいる。</p>
+      <p class="work-name">accounting-helper</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/research-assistant.webp" alt="research-assistant のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">RESEARCH</span>
+      <p class="work-catch">調べる手間を、毎週手放す。</p>
+      <p class="work-desc">業界動向や競合の情報を定期的に自動調査。気づいたら情報が集まっている状態を作る。</p>
+      <p class="work-name">research-assistant</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/legal-advisor.webp" alt="legal-advisor のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">LEGAL</span>
+      <p class="work-catch">契約書、後回しにしない仕組み。</p>
+      <p class="work-desc">業務委託契約書の作成やフリーランス新法対応をサポート。小さな見落としを防ぐ役目。</p>
+      <p class="work-name">legal-advisor</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/content-creator.webp" alt="content-creator のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">CONTENT</span>
+      <p class="work-catch">発信を止めない、書き手の相棒。</p>
+      <p class="work-desc">自分自身の発信でも日常的に使っているコンテンツ制作AI。著作権や表現のルールを踏まえながら書き進める。</p>
+      <p class="work-name">content-creator</p>
+    </div>
+
+    <div class="work-card">
+      <div class="work-thumb"><img src="images/chirashi-ai.webp" alt="chirashi-ai のイメージイラスト" loading="lazy" decoding="async"></div>
+      <span class="work-tag">FLYER (MVP)</span>
+      <p class="work-catch">ヒアリングから、チラシのコピーへ。</p>
+      <p class="work-desc">話を聞くところからコピー案の生成までをつなげた、自作の紙媒体制作AI。まだ育成中の最新作。</p>
+      <p class="work-name">chirashi-ai</p>
+    </div>
+  </div>
+
+  <div class="works-coming-soon">
+    <span class="label">COMING SOON</span>
+    <p>ほかにも、こんなエージェントを準備中です：AI社員秘書 ／ システムエンジニア ／ 新規事業 ／ スライド作成</p>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <h2 class="cta-eyebrow">LET'S TALK.</h2>
+  <p class="cta-sub">まずは、お話から。</p>
+  <p class="cta-lead">AIエージェントのご相談も、お仕事のお誘いも、ちょっとした挨拶も。まずは気軽にお話しできたらうれしいです。</p>
+
+  <div class="cta-form-wrap">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScAGkR8L4DT3DY8U7E2aecBks3KqqGl-Nlf0JM6JoQ2KdHL7g/viewform" target="_blank" rel="noopener noreferrer" class="btn-primary">話してみる</a>
+    <p class="cta-privacy-note">ご入力いただいた情報は、お問い合わせへの対応以外の目的では使用しません。</p>
+  </div>
+
+  <div class="cta-divider"></div>
+
+  <div>
+    <a href="https://lin.ee/9Xm8Fjc" target="_blank" rel="noopener noreferrer" class="cta-line-btn"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
+    <p class="cta-line-label">LINE公式アカウントで、気軽にどうぞ</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-social">
+      <a href="https://x.com/n_tategami" target="_blank" rel="noopener noreferrer" aria-label="X（旧Twitter）">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/lion_tate2/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+      <a href="https://www.facebook.com/naoko.ishikawa.73" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.6h2.55l.38-2.96h-2.93V8.56c0-.86.24-1.44 1.47-1.44h1.57V4.47C16.24 4.4 15.36 4.32 14.33 4.32c-2.15 0-3.63 1.31-3.63 3.72v2.4H8.14v2.96h2.56V21z"/></svg>
+      </a>
+    </div>
+    <p class="footer-copyright">© nao — AI Agent Portfolio</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('mobile-menu');
+
+    toggle.addEventListener('click', function () {
+      var isOpen = menu.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
