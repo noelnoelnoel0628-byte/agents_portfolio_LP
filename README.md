@@ -67,7 +67,23 @@ python3 -m http.server 8000
 - **エージェントを追加・変更する**: `#works` 内の `<div class="work-card">` をコピーして、タグ・キャッチ・説明・名前・画像を書き換えます。画像は `images/` に置き、`<img src="images/xxx.webp">` で指定します。
 - **プロフィールを変更する**: `#about` 内の `profile-row` を編集します。
 - **問い合わせ先を変更する**: `#contact` 内のフォーム・LINE・SNS（X / Instagram / Facebook）のリンクを差し替えます。
-- **配色・フォント**: `<style>` 冒頭の CSS 変数（`:root`）で調整できます。
+- **配色・フォント**: `<style>` 冒頭の `:root` にある CSS 変数を書き換えると、ページ全体に反映されます。
+
+  | 変数 | 現在の色 | 用途の目安 |
+  | --- | --- | --- |
+  | `--color-blue` | `#474E63` | メインのネイビー |
+  | `--color-coral` | `#F0C9BE` | コーラル（アクセント） |
+  | `--color-white` | `#FFFFFF` | 背景の白 |
+  | `--color-smoke` | `#ACB3C1` | グレー系 |
+  | `--color-periwinkle` | `#D6D8F5` | 淡い青紫 |
+  | `--color-maroon` | `#81545B` | マルーン（フォーカス枠など） |
+  | `--color-bg-soft-coral` | `#FAEFEC` | 淡いコーラルの背景 |
+  | `--color-text-primary` | `#474E63` | 本文テキスト |
+  | `--color-text-accent` | `#81545B` | 強調テキスト |
+  | `--color-text-sub` | `#5E6578` | 補足テキスト |
+
+  フォントも同じ `:root` の `--font-heading-ja`（日本語見出し）、`--font-heading-en`（英字見出し）、`--font-body`（本文）で変更できます。フォントを変える場合は `<head>` の Google Fonts の読み込みも合わせて更新してください。
+  ヘッダーの半透明の白（`rgba(255, 255, 255, 0.92)`）だけは変数ではなく直書きなので、必要なら該当箇所を直接編集します。
 - **公開時の見え方**: `<head>` 内の `<title>`、`description`、OGP（`og:*`）、`images/ogp-image.jpg` を更新します。
 
 ### 公開（デプロイ）する
